@@ -1,19 +1,38 @@
 <?php 
-    if (isset($_POST['submit'])){
-            include_once('config.php');
+    if (isset($_POST['bntEnviar'])){
+        include_once('config.php');
 
         $nome = $_POST['nome'];
         $descricao = $_POST['descricao'];
         $dataInicio = $_POST['dataInicio'];
         $dataFim = $_POST['dataFim'];
             
-        $create_tasks = mysqli_query($conexao, "INSERT INTO tarefa(Nome, Descricao, DataIni, DataFim) VALUES('$nome', '$descricao', '$dataInicio', '$dataFim')");
+        $create_tasks = mysqli_query($conexao, "INSERT INTO tarefa(Nome, Descricao, DataIni, DataFim, Estado) VALUES('$nome', '$descricao', '$dataInicio', '$dataFim', 0)");
 
-        if ($create_tasks) {
-            header("Location: {$_SERVER['REQUEST_URI']}");
-            exit();
-        }      
-    }    
+        header("Location: {$_SERVER['REQUEST_URI']}");
+             
+    }
+    
+    if (isset($_POST['bntConcluir'])){
+        include_once('config.php');
+        if(isset($_POST['ckBox'])){
+            $checkboxs = $_POST['ckBox'];            
+
+            if ($checkboxs !== null){         
+                for($i = 0; $i < count($checkboxs); $i++){
+                    mysqli_query($conexao, "UPDATE tarefa SET Estado = '1' WHERE idTarefa = $checkboxs[$i];");
+                }
+            }
+        }
+    }
+
+    function dd($param){
+        echo '<pre>';
+            print_r($param);
+        echo '<pre>';
+        die();
+    }
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +40,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulário</title>
-    <link rel="stylesheet" type="text/css" href="../style/style.css">
+    <link rel="stylesheet" type="text/css" href="..\style\style.css">
 </head>
 <body>
     <div>
@@ -38,45 +57,46 @@
                     <input type="date" name="dataInicio" required><br>
                     <label>Data de Fim:</label><br>
                     <input type="date" name="dataFim" required>
-                    <input type="submit" name="submit" id="submit">
+                    <input type="submit" name="bntEnviar" id="bntEnviar">
+                    
                 </form>
             </fieldset>
         </div>
         <div class="tasks">
             <fieldset>
                 <legend>Tarefas</legend>
-                <?php
-                    include_once('config.php');
+                <form method="POST" action="index.php">
+                    <?php
+                        include_once('config.php');
 
-                    $query = "SELECT * FROM tarefa";
-                    $tasks = $conexao->query($query);
+                        $query = "SELECT * FROM tarefa";
+                        $tasks = $conexao->query($query);
 
-                    if ($tasks->num_rows >= 0){
-                        while ($row = $tasks->fetch_assoc()) {
-                            $dataInicial = new DateTime($row['DataIni']);
-                            $dataFinal = new DateTime($row['DataFim']);
+                        if ($tasks->num_rows >= 0){
+                            while ($row = $tasks->fetch_assoc()) {
+                                $dataInicial = new DateTime($row['DataIni']);
+                                $dataFinal = new DateTime($row['DataFim']);
+                                $concluida = $row['Estado'];
 
-                            $diferenca = date_diff($dataInicial, $dataFinal);
+                                $diferenca = date_diff($dataInicial, $dataFinal);
+                                
+                                ?>
+                                <input type="checkbox" name="ckBox[]" id="checkbox" value="<?php echo $row['idTarefa'];?>" <?php if ($concluida == 1) echo "checked";?>>                        
+                                <label for="box" id="tasks_text"><?php echo $row['Nome'];?> - </label><br>              
+                                <label id="tasks_description">Descrição: <?php echo $row['Descricao'];?></label><br>
+                                <label id="tasks_duration">Duração: <?php echo $diferenca->format('%a dias.');?></label><br><br>
+                                <?php                           
+                            }
                             
-                            ?>
-                            <input type="checkbox" name="box" id="checkbox">                        
-                            <label for="box" id="tasks_text"><?php echo $row['Nome'];?> - </label><br>                 
-                            <label id="tasks_description">Descrição: <?php echo $row['Descricao'];?></label><br>
-                            <label id="tasks_duration">Duração: <?php echo $diferenca->format('%a dias.');?></label><br><br>
-                            <?php                 
                         }
-                    }
 
-                    else{
-                        
-                    }
-
-                    $conexao->close();
-                ?>
+                        $conexao->close();
+                    ?>
+                    <input type="submit" name="bntConcluir" id="bntConcluir" value="Concluir">
+                </form>
             </fieldset>
         </div>
         <h6 id="by">Feito por:<a href="www.google.com" target="_blank">Illano Ayala</a></h6>
     </div>
-  
 </body>
 </html>

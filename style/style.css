@@ -10,8 +10,7 @@ body{
     margin-right: 450px; 
     margin-left: 450px;
 
-    background-color: rgba(255, 255, 255, 0.4);
-       
+    background-color: rgba(255, 255, 255, 0.4);     
 }
 
 .tasks{   
@@ -20,7 +19,6 @@ body{
     margin-left: 450px;
 
     background-color: rgba(255, 255, 255, 0.4);
-
 }
 
 h1{
@@ -36,7 +34,7 @@ h1{
 fieldset{
     font-family: Arial, sans-serif;
     margin-top: 5px;
-    border: 3px solid #666666;
+    border: 1px solid #666666;
 }
 
 legend{
@@ -57,20 +55,16 @@ label{
 
 #tasks_text{
     font-family: Arial, sans-serif;
-    font-size: 20px;
+    font-size: 23px;
     margin-top: auto;
     margin-bottom: 50px;
     color: #4CAF50; 
 }
 
-#tasks_description{
-    font-family: Arial, sans-serif;
-    font-size: 13px;  
-}
-
-#tasks_duration{
+#tasks_description, #tasks_duration{
     font-family: Arial, sans-serif;
     font-size: 13px;
+
 }
 
 textarea{
@@ -115,7 +109,8 @@ textarea:hover::placeholder {
     color: #999;
 }
 
-#submit{
+#bntEnviar, #bntConcluir{
+    width: 80px;
     background-color: #f2f2f2;
     color: #333;
     border: 1px solid #ccc;
@@ -128,7 +123,7 @@ textarea:hover::placeholder {
     transition: color 0.3s, box-shadow 0.3s;
 }
 
-#submit:hover{
+#bntEnviar:hover, #bntConcluir:hover{
     color: #66afe9;
     box-shadow: 0 0 4px #66afe9;
 }
