@@ -14,6 +14,7 @@
     
     if (isset($_POST['bntConcluir'])){
         include_once('config.php');
+        
         if(isset($_POST['ckBox'])){
             $checkboxs = $_POST['ckBox'];            
 
@@ -27,6 +28,7 @@
 
     if (isset($_GET['deletar'])){
         include_once('config.php');
+        
         $id = filter_var($_GET['deletar'], FILTER_SANITIZE_NUMBER_INT);
 
         mysqli_query($conexao, "DELETE FROM tarefa WHERE idTarefa = $id;");
