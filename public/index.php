@@ -87,7 +87,7 @@
                                     <label id="tasks_duration">Duração: <?php echo $diferenca->format('%a dias.');?></label><br>
                                     <?php 
                                         if($concluida == 1){
-                                            echo "<h6 id='tasks_state'>[Concluída]</h6> <a href='index.php?deletar=$id' id='tasks_delete'><img src='..\style\img\lixeira.png'></a>";               
+                                            echo "<h6 id='tasks_state'>[Concluída]</h6> <a href='index.php?deletar=$id' id='tasks_delete'><img src='..\style\img\lixeira.png' id='icon'></a>";               
                                         }
                                         else{
                                             echo "<h6 id='tasks_state2'>[Em Andamento]</h6>";

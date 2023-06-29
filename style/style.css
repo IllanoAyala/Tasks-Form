@@ -154,37 +154,38 @@ textarea:hover::placeholder {
 #tasks_state{
     font-size: 13px;
     margin-left: 400px;
-    margin-top: 0px;
+    margin-top: -68px;
     margin-bottom: 2px;
 }
 
 #tasks_state2{
     font-size: 13px;
     margin-left: 370px;
-    margin-top: 0px;
-    margin-bottom: 10px;
+    margin-top: -68px;
+    margin-bottom: 68px;
     margin-right: 0px;
     color: orange;
 }
 
 #tasks_delete{
+    position: relative;
     text-decoration: none;
     color: red;
     font-size: 13px;
     margin-left: 440px;
     margin-bottom: 0px;
+    margin-top: 10px;
+}
+
+#icon{
+    position: relative;
     margin-top: 50px;
-    transition: color 0.3s, transform 0,3 ease-in-out;
-}
-
-#tasks_delete:hover{
-    transform: scale(1.2);
-    color: #66afe9;
-}
-
-img{
-    margin-top: 20px;
     width: 30px;
     height: 30px;
     margin-bottom: 3px;
+    transition: transform 0.3 ease-in-out;
+}
+
+#icon:hover{
+    transform: scale(1.1);
 }
