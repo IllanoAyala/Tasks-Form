@@ -9,8 +9,7 @@
             
         $create_tasks = mysqli_query($conexao, "INSERT INTO tarefa(Nome, Descricao, DataIni, DataFim, Estado) VALUES('$nome', '$descricao', '$dataInicio', '$dataFim', 0)");
 
-        header("Location: {$_SERVER['REQUEST_URI']}");
-             
+        header("Location: {$_SERVER['REQUEST_URI']}");            
     }
     
     if (isset($_POST['bntConcluir'])){
@@ -26,11 +25,11 @@
         }
     }
 
-    function dd($param){
-        echo '<pre>';
-            print_r($param);
-        echo '<pre>';
-        die();
+    if (isset($_GET['deletar'])){
+        include_once('config.php');
+        $id = filter_var($_GET['deletar'], FILTER_SANITIZE_NUMBER_INT);
+
+        mysqli_query($conexao, "DELETE FROM tarefa WHERE idTarefa = $id;");
     }
     
 ?>
@@ -52,13 +51,12 @@
                     <label>Nome da Tarefa:</label><br>
                     <input type="text" name="nome" placeholder="Nova Tarefa" required><br>
                     <label>Descrição da Tarefa: </label><br>
-                    <textarea name="descricao"cols="60" rows="7" placeholder="Descrição da Tarefa"></textarea><br>
+                    <textarea name="descricao"cols="62" rows="7" placeholder="Descrição da Tarefa"></textarea><br>
                     <label>Data de Início:</label><br>
                     <input type="date" name="dataInicio" required><br>
                     <label>Data de Fim:</label><br>
                     <input type="date" name="dataFim" required>
-                    <input type="submit" name="bntEnviar" id="bntEnviar">
-                    
+                    <input type="submit" name="bntEnviar" id="bntEnviar">                  
                 </form>
             </fieldset>
         </div>
@@ -77,17 +75,27 @@
                                 $dataInicial = new DateTime($row['DataIni']);
                                 $dataFinal = new DateTime($row['DataFim']);
                                 $concluida = $row['Estado'];
+                                $id = $row['idTarefa'];
 
                                 $diferenca = date_diff($dataInicial, $dataFinal);
                                 
                                 ?>
-                                <input type="checkbox" name="ckBox[]" id="checkbox" value="<?php echo $row['idTarefa'];?>" <?php if ($concluida == 1) echo "checked";?>>                        
-                                <label for="box" id="tasks_text"><?php echo $row['Nome'];?> - </label><br>              
-                                <label id="tasks_description">Descrição: <?php echo $row['Descricao'];?></label><br>
-                                <label id="tasks_duration">Duração: <?php echo $diferenca->format('%a dias.');?></label><br><br>
+                                <fieldset id="fieldset_tasks">                                   
+                                    <input type="checkbox" name="ckBox[]" id="checkbox" value="<?php echo $row['idTarefa'];?>" <?php if ($concluida == 1) echo "checked disabled";?>>                        
+                                    <label for="box" id="tasks_text"><?php echo $row['Nome'];?></label><br>              
+                                    <label id="tasks_description">Descrição: <?php echo $row['Descricao'];?></label><br>
+                                    <label id="tasks_duration">Duração: <?php echo $diferenca->format('%a dias.');?></label><br>
+                                    <?php 
+                                        if($concluida == 1){
+                                            echo "<h6 id='tasks_state'>[Concluída]</h6> <a href='index.php?deletar=$id' id='tasks_delete'><img src='..\style\img\lixeira.png'></a>";               
+                                        }
+                                        else{
+                                            echo "<h6 id='tasks_state2'>[Em Andamento]</h6>";
+                                        }
+                                    ?>
+                                </fieldset>
                                 <?php                           
-                            }
-                            
+                            }                           
                         }
 
                         $conexao->close();

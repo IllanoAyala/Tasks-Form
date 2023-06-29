@@ -9,6 +9,7 @@ body{
     margin-top: 60px;
     margin-right: 450px; 
     margin-left: 450px;
+    padding: 0px;
 
     background-color: rgba(255, 255, 255, 0.4);     
 }
@@ -17,13 +18,14 @@ body{
     margin-top: auto;
     margin-right: 450px;
     margin-left: 450px;
+    padding: 0px;
 
     background-color: rgba(255, 255, 255, 0.4);
 }
 
 h1{
     font-family: Arial, sans-serif;
-    color: #0066CC;
+    color: black;
     text-align: center;
     margin-top: 70px;
     text-transform: uppercase;
@@ -32,15 +34,22 @@ h1{
 }
 
 fieldset{
+    position: relative;
     font-family: Arial, sans-serif;
     margin-top: 5px;
+    margin-left: 0px;
+    margin-right: 0px;
     border: 1px solid #666666;
+}
+
+#fieldset_tasks{
+    padding: 3px;
 }
 
 legend{
     font-family: Arial, sans-serif;
     text-align: center;
-    color: #666666;
+    color: black;
 }
 
 label{
@@ -49,16 +58,16 @@ label{
     font-size: 16px;
     margin: 0;
     margin-top: 5px;
-    margin-left: 20px;
+    margin-left: 10px;
     color: #333333;
 }
 
 #tasks_text{
     font-family: Arial, sans-serif;
     font-size: 23px;
-    margin-top: auto;
-    margin-bottom: 50px;
-    color: #4CAF50; 
+    margin-top: 7px;
+    margin-left: 0px;
+    margin-bottom: 50px; 
 }
 
 #tasks_description, #tasks_duration{
@@ -75,7 +84,7 @@ textarea{
     font-family: Arial, sans-serif;
     font-size: 14px;
     padding: 8px 12px;
-    margin-left: 20px;
+    margin-left: 10px;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
@@ -87,7 +96,7 @@ input {
     font-family: Arial, sans-serif;
     font-size: 14px;
     padding: 8px 12px;
-    margin-left: 20px;
+    margin-left: 10px;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
@@ -136,8 +145,46 @@ textarea:hover::placeholder {
 }
 
 #checkbox{
-    margin-left: 20px;
+    margin-top: 10px;
+    margin-left: 10px;
     width: 20px;
     height: 20px;
 }
 
+#tasks_state{
+    font-size: 13px;
+    margin-left: 400px;
+    margin-top: 0px;
+    margin-bottom: 2px;
+}
+
+#tasks_state2{
+    font-size: 13px;
+    margin-left: 370px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    margin-right: 0px;
+    color: orange;
+}
+
+#tasks_delete{
+    text-decoration: none;
+    color: red;
+    font-size: 13px;
+    margin-left: 440px;
+    margin-bottom: 0px;
+    margin-top: 50px;
+    transition: color 0.3s, transform 0,3 ease-in-out;
+}
+
+#tasks_delete:hover{
+    transform: scale(1.2);
+    color: #66afe9;
+}
+
+img{
+    margin-top: 20px;
+    width: 30px;
+    height: 30px;
+    margin-bottom: 3px;
+}
