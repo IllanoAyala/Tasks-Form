@@ -7,7 +7,7 @@
         $dataInicio = $_POST['dataInicio'];
         $dataFim = $_POST['dataFim'];
             
-        $create_tasks = mysqli_query($conexao, "INSERT INTO tarefa(Nome, Descricao, DataIni, DataFim, Estado) VALUES('$nome', '$descricao', '$dataInicio', '$dataFim', 0)");
+        $create_tasks = mysqli_query($conexao, "INSERT INTO tarefa(nome, descricao, data_inicio, data_fim, estado) VALUES('$nome', '$descricao', '$dataInicio', '$dataFim', 0)");
 
         header("Location: {$_SERVER['REQUEST_URI']}");            
     }
@@ -20,7 +20,7 @@
 
             if ($checkboxs !== null){         
                 for($i = 0; $i < count($checkboxs); $i++){
-                    mysqli_query($conexao, "UPDATE tarefa SET Estado = '1' WHERE idTarefa = $checkboxs[$i];");
+                    mysqli_query($conexao, "UPDATE tarefa SET estado = '1' WHERE id = $checkboxs[$i];");
                 }
             }
         }
@@ -31,7 +31,7 @@
         
         $id = filter_var($_GET['deletar'], FILTER_SANITIZE_NUMBER_INT);
 
-        mysqli_query($conexao, "DELETE FROM tarefa WHERE idTarefa = $id;");
+        mysqli_query($conexao, "DELETE FROM tarefa WHERE id = $id;");
     }
     
 ?>
@@ -50,15 +50,18 @@
             <fieldset>
                 <legend>Criar Tarefas</legend>
                 <form method="POST" action="index.php">
-                    <label>Nome da Tarefa:</label><br>
-                    <input type="text" name="nome" placeholder="Nova Tarefa" required><br>
-                    <label>Descrição da Tarefa: </label><br>
-                    <textarea name="descricao"cols="62" rows="7" placeholder="Descrição da Tarefa"></textarea><br>
-                    <label>Data de Início:</label><br>
-                    <input type="date" name="dataInicio" required><br>
-                    <label>Data de Fim:</label><br>
-                    <input type="date" name="dataFim" required>
-                    <input type="submit" name="bntEnviar" id="bntEnviar">                  
+                    <div style="padding: 10px; display: flex; flex-direction: column;">
+                        <label>Nome da Tarefa:</label>
+                        <input type="text" name="nome" placeholder="Nova Tarefa" required>
+                        <label>Descrição da Tarefa: </label>
+                        <textarea name="descricao"cols="62" rows="7" placeholder="Descrição da Tarefa" style="resize: none;"></textarea>
+                        <label>Data de Início:</label>
+                        <input type="date" name="dataInicio" required>
+                        <label>Data de Fim:</label>
+                        <input type="date" name="dataFim" required>
+                        <input type="submit" name="bntEnviar" id="bntEnviar">  
+                    </div>
+                                    
                 </form>
             </fieldset>
         </div>
@@ -74,18 +77,18 @@
 
                         if ($tasks->num_rows >= 0){
                             while ($row = $tasks->fetch_assoc()) {
-                                $dataInicial = new DateTime($row['DataIni']);
-                                $dataFinal = new DateTime($row['DataFim']);
-                                $concluida = $row['Estado'];
-                                $id = $row['idTarefa'];
+                                $dataInicial = new DateTime($row['data_inicio']);
+                                $dataFinal = new DateTime($row['data_fim']);
+                                $concluida = $row['estado'];
+                                $id = $row['id'];
 
                                 $diferenca = date_diff($dataInicial, $dataFinal);
                                 
                                 ?>
                                 <fieldset id="fieldset_tasks">                                   
-                                    <input type="checkbox" name="ckBox[]" id="checkbox" value="<?php echo $row['idTarefa'];?>" <?php if ($concluida == 1) echo "checked disabled";?>>                        
-                                    <label for="box" id="tasks_text"><?php echo $row['Nome'];?></label><br>              
-                                    <label id="tasks_description">Descrição: <?php echo $row['Descricao'];?></label><br>
+                                    <input type="checkbox" name="ckBox[]" id="checkbox" value="<?php echo $row['id'];?>" <?php if ($concluida == 1) echo "checked disabled";?>>                        
+                                    <label for="box" id="tasks_text"><?php echo $row['nome'];?></label><br>              
+                                    <label id="tasks_description">Descrição: <?php echo $row['descricao'];?></label><br>
                                     <label id="tasks_duration">Duração: <?php echo $diferenca->format('%a dias.');?></label><br>
                                     <?php 
                                         if($concluida == 1){
@@ -106,7 +109,9 @@
                 </form>
             </fieldset>
         </div>
-        <h6 id="by">Feito por:<a href="www.google.com" target="_blank">Illano Ayala</a></h6>
+        <div>
+            <h6 id="by">Feito por:<a href="www.google.com" target="_blank">Illano Ayala</a></h6>
+        </div>
     </div>
 </body>
 </html>
