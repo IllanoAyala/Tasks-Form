@@ -61,7 +61,6 @@
                         <input type="date" name="dataFim" required>
                         <input type="submit" name="bntEnviar" id="bntEnviar">  
                     </div>
-                                    
                 </form>
             </fieldset>
         </div>
