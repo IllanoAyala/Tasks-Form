@@ -23,7 +23,7 @@ Este é um projeto simples de um formulário de tarefas criado com PHP. O projet
 1. Clone o repositório para o seu ambiente de desenvolvimento.
 
 ```bash
-    git clone https://github.com/seu-usuario/Formulario-Tarefas-Com-PHP.git
+    git clone https://github.com/IllanoAyala/Tasks-Form.git
 ```
 
 2. Certifique-se de ter um servidor PHP configurado (por exemplo, XAMPP, MAMP).
