@@ -46,9 +46,8 @@
 <body>
     <div>
         <div class="create-tasks">
-            <h1>Lista de Tarefas</h1>
+            <h1>{ Lista de Tarefas }</h1>
             <fieldset>
-                <legend>Criar Tarefas</legend>
                 <form method="POST" action="index.php">
                     <div style="padding: 10px; display: flex; flex-direction: column;">
                         <label>Nome da Tarefa:</label>
@@ -68,49 +67,58 @@
             <fieldset>
                 <legend>Tarefas</legend>
                 <form method="POST" action="index.php">
-                    <?php
-                        include_once('config.php');
+                <?php
+                    include_once('config.php');
 
-                        $query = "SELECT * FROM tarefa";
-                        $tasks = $conexao->query($query);
+                    $result = $conexao->query("SELECT COUNT(*) as total_tarefas FROM tarefa");
+                    $query = "SELECT * FROM tarefa";
+                    $tasks = $conexao->query($query);
 
-                        if ($tasks->num_rows >= 0){
-                            while ($row = $tasks->fetch_assoc()) {
-                                $dataInicial = new DateTime($row['data_inicio']);
-                                $dataFinal = new DateTime($row['data_fim']);
-                                $concluida = $row['estado'];
-                                $id = $row['id'];
+                    if ($tasks->num_rows > 0) {
+                        while ($row = $tasks->fetch_assoc()) {
+                            $dataInicial = new DateTime($row['data_inicio']);
+                            $dataFinal = new DateTime($row['data_fim']);
+                            $concluida = $row['estado'];
+                            $id = $row['id'];
 
-                                $diferenca = date_diff($dataInicial, $dataFinal);
-                                
-                                ?>
-                                <fieldset id="fieldset_tasks">                                   
-                                    <input type="checkbox" name="ckBox[]" id="checkbox" value="<?php echo $row['id'];?>" <?php if ($concluida == 1) echo "checked disabled";?>>                        
-                                    <label for="box" id="tasks_text"><?php echo $row['nome'];?></label><br>              
-                                    <label id="tasks_description">Descrição: <?php echo $row['descricao'];?></label><br>
-                                    <label id="tasks_duration">Duração: <?php echo $diferenca->format('%a dias.');?></label><br>
-                                    <?php 
-                                        if($concluida == 1){
-                                            echo "<h6 id='tasks_state'>[Concluída]</h6> <a href='index.php?deletar=$id' id='tasks_delete'><img src='..\style\img\lixeira.png' id='icon'></a>";               
-                                        }
-                                        else{
-                                            echo "<h6 id='tasks_state2'>[Em Andamento]</h6>";
-                                        }
-                                    ?>
-                                </fieldset>
-                                <?php                           
-                            }                           
-                        }
-
-                        $conexao->close();
+                            $diferenca = date_diff($dataInicial, $dataFinal);
                     ?>
-                    <input type="submit" name="bntConcluir" id="bntConcluir" value="Concluir">
+
+                            <fieldset>
+                                <input type="checkbox" name="ckBox[]" id="checkbox" value="<?php echo $row['id']; ?>" <?php if ($concluida == 1) echo "checked disabled"; ?>>
+                                <label for="box" id="tasks_text"><?php echo $row['nome']; ?></label><br>
+                                <label id="tasks_description">Descrição: <?php echo $row['descricao']; ?></label><br>
+                                <label id="tasks_duration">Duração: <?php echo $diferenca->format('%a dias.'); ?></label><br>
+                                <?php
+                                if ($concluida == 1) {
+                                    echo "<h6 id='tasks_state'>[Concluída]</h6> <a href='index.php?deletar=$id' id='tasks_delete'><img src='..\style\img\lixeira.png' id='icon'></a>";
+                                } else {
+                                    echo "<h6 id='tasks_state2'>[Em Andamento]</h6>";
+                                }
+                                ?>
+                            </fieldset>
+
+                    <?php
+                        }
+                    }
+
+                    if ($result) {
+                        $row_count = $result->fetch_assoc()['total_tarefas'];
+                        if ($row_count > 0) {
+                            echo '<input type="submit" name="bntConcluir" id="bntConcluir" value="Concluir">';
+                        }
+                    } else {
+                        echo "Erro na consulta: " . $conexao->error;
+                    }
+
+                    $conexao->close();
+                    ?>
                 </form>
             </fieldset>
         </div>
-        <div>
+        <!-- <div>
             <h6 id="by">Feito por:<a href="www.google.com" target="_blank">Illano Ayala</a></h6>
-        </div>
+        </div>   -->
     </div>
 </body>
 </html>
